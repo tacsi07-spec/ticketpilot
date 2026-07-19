@@ -50,7 +50,9 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [replyLanguage, setReplyLanguage] =
-  useState<"German" | "English">("German");
+    useState<"German" | "English">("German");
+  const [copiedCommand, setCopiedCommand] = useState<number | null>(null);
+  const [replyCopied, setReplyCopied] = useState(false);
 
   async function handleAnalyze() {
     const trimmedTicket = ticket.trim();
@@ -66,9 +68,10 @@ export default function Home() {
       setResult(null);
 
       const data = await analyzeTicket(
-  trimmedTicket,
-  replyLanguage
-);
+        trimmedTicket,
+        replyLanguage
+      );
+
       setResult(data);
     } catch (error) {
       console.error(error);
@@ -78,6 +81,36 @@ export default function Home() {
       );
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function copyCommand(command: string, index: number) {
+    try {
+      await navigator.clipboard.writeText(command);
+      setCopiedCommand(index);
+
+      window.setTimeout(() => {
+        setCopiedCommand(null);
+      }, 2000);
+    } catch (error) {
+      console.error("Could not copy command:", error);
+    }
+  }
+
+  async function copyUserReply() {
+    if (!result) {
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(result.user_reply);
+      setReplyCopied(true);
+
+      window.setTimeout(() => {
+        setReplyCopied(false);
+      }, 2000);
+    } catch (error) {
+      console.error("Could not copy reply:", error);
     }
   }
 
@@ -110,28 +143,28 @@ export default function Home() {
             className="min-h-48 w-full resize-y rounded-xl border border-gray-300 p-4 text-gray-900 outline-none transition focus:border-gray-700"
           />
 
-<div className="mt-4">
-  <label
-    htmlFor="reply-language"
-    className="mb-2 block text-sm font-semibold text-gray-800"
-  >
-    End-user reply language
-  </label>
+          <div className="mt-4">
+            <label
+              htmlFor="reply-language"
+              className="mb-2 block text-sm font-semibold text-gray-800"
+            >
+              End-user reply language
+            </label>
 
-  <select
-    id="reply-language"
-    value={replyLanguage}
-    onChange={(event) =>
-      setReplyLanguage(
-        event.target.value as "German" | "English"
-      )
-    }
-    className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900"
-  >
-    <option value="German">German</option>
-    <option value="English">English</option>
-  </select>
-</div>
+            <select
+              id="reply-language"
+              value={replyLanguage}
+              onChange={(event) =>
+                setReplyLanguage(
+                  event.target.value as "German" | "English"
+                )
+              }
+              className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900"
+            >
+              <option value="German">German</option>
+              <option value="English">English</option>
+            </select>
+          </div>
 
           <div className="mt-4 flex flex-wrap items-center gap-4">
             <button
@@ -182,12 +215,28 @@ export default function Home() {
 
                 <div className="space-y-4">
                   {result.powershell_commands.map((command, index) => (
-                    <pre
+                    <div
                       key={`command-${index}`}
-                      className="overflow-x-auto rounded-lg bg-black p-4 text-sm text-green-300"
+                      className="overflow-hidden rounded-lg bg-black"
                     >
-                      <code>{command}</code>
-                    </pre>
+                      <div className="flex items-center justify-between border-b border-gray-800 px-4 py-2">
+                        <span className="text-xs font-semibold uppercase tracking-wide text-gray-400">
+                          PowerShell
+                        </span>
+
+                        <button
+                          type="button"
+                          onClick={() => copyCommand(command, index)}
+                          className="rounded-md px-3 py-1 text-sm text-gray-300 transition hover:bg-gray-800 hover:text-white"
+                        >
+                          {copiedCommand === index ? "Copied!" : "Copy"}
+                        </button>
+                      </div>
+
+                      <pre className="overflow-x-auto p-4 text-sm text-green-300">
+                        <code>{command}</code>
+                      </pre>
+                    </div>
                   ))}
                 </div>
               </section>
@@ -207,31 +256,29 @@ export default function Home() {
               <h2 className="mb-2 text-xl font-semibold text-gray-900">
                 Estimated Resolution Time
               </h2>
-            
-            <section className="rounded-xl border border-blue-200 bg-blue-50 p-6 shadow-sm">
-  <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-    <h2 className="text-xl font-semibold text-gray-900">
-      End-User Reply
-    </h2>
-
-    <button
-      type="button"
-      onClick={() =>
-        navigator.clipboard.writeText(result.user_reply)
-      }
-      className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-gray-800 transition hover:bg-gray-100"
-    >
-      Copy Reply
-    </button>
-  </div>
-
-  <p className="whitespace-pre-wrap leading-7 text-gray-700">
-    {result.user_reply}
-  </p>
-</section>
 
               <p className="text-gray-700">
                 {result.estimated_resolution_time}
+              </p>
+            </section>
+
+            <section className="rounded-xl border border-blue-200 bg-blue-50 p-6 shadow-sm">
+              <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+                <h2 className="text-xl font-semibold text-gray-900">
+                  End-User Reply
+                </h2>
+
+                <button
+                  type="button"
+                  onClick={copyUserReply}
+                  className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-gray-800 transition hover:bg-gray-100"
+                >
+                  {replyCopied ? "Copied!" : "Copy Reply"}
+                </button>
+              </div>
+
+              <p className="whitespace-pre-wrap leading-7 text-gray-700">
+                {result.user_reply}
               </p>
             </section>
           </div>
