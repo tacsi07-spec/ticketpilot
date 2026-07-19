@@ -1,8 +1,10 @@
 import type { TicketAnalysis } from "@/types/ticket";
 
+import { ClassificationCard } from "./ClassificationCard";
 import { ListCard } from "./ListCard";
 import { PowerShellCard } from "./PowerShellCard";
 import { ReplyCard } from "./ReplyCard";
+
 
 type AnalysisResultProps = {
   result: TicketAnalysis;
@@ -15,7 +17,12 @@ export function AnalysisResult({
     <div className="mt-8 space-y-6">
       <section className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
         <h2 className="mb-3 text-xl font-semibold text-gray-900">
-          Problem Summary
+      <ClassificationCard
+  category={result.category}
+  priority={result.priority}
+  priorityReason={result.priority_reason}
+/>
+    Problem Summary
         </h2>
 
         <p className="leading-7 text-gray-700">

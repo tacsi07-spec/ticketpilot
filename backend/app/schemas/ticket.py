@@ -1,12 +1,15 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 
 class TicketRequest(BaseModel):
-    ticket: str = Field(min_length=5, max_length=10_000)
-    reply_language: str = Field(default="German")
+    ticket: str
+    reply_language: str
 
 
 class TicketAnalysis(BaseModel):
+    category: str
+    priority: str
+    priority_reason: str
     problem_summary: str
     likely_causes: list[str]
     troubleshooting_steps: list[str]
