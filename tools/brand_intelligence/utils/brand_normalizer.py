@@ -38,6 +38,7 @@ class BrandNameNormalizer:
         "analytics",
         "automation",
         "cloud",
+        "company",
         "consulting",
         "digital",
         "group",
@@ -73,6 +74,16 @@ class BrandNameNormalizer:
         )
 
     @staticmethod
+    def _extract_primary_name(value: str) -> str:
+        parts = re.split(
+            r"\s*(?:/|\||–|—)\s*",
+            value,
+            maxsplit=1,
+        )
+
+        return parts[0].strip()
+
+    @staticmethod
     def _clean_punctuation(value: str) -> str:
         return re.sub(
             r"[^a-zA-Z0-9\s-]",
@@ -97,8 +108,15 @@ class BrandNameNormalizer:
                 "A cégnév nem lehet üres."
             )
 
-        cleaned = self._remove_parenthetical_content(name)
+        cleaned = self._extract_primary_name(name)
+        cleaned = self._remove_parenthetical_content(cleaned)
         cleaned = self._remove_accents(cleaned)
+        cleaned = re.sub(
+            r"\.(com|ai|io|de|dev|app|co|net|org)\b",
+            "",
+            cleaned,
+            flags=re.IGNORECASE,
+        )
         cleaned = self._clean_punctuation(cleaned)
         cleaned = cleaned.replace("-", " ")
         cleaned = self._collapse_whitespace(cleaned)

@@ -42,6 +42,26 @@ def parse_arguments() -> argparse.Namespace:
         help="A célpiac leírása.",
     )
 
+    cache_group = parser.add_mutually_exclusive_group()
+
+    cache_group.add_argument(
+        "--refresh-company-cache",
+        action="store_true",
+        help=(
+            "Új OpenAI webes cégnévkeresést indít, "
+            "majd felülírja a meglévő cache-t."
+        ),
+    )
+
+    cache_group.add_argument(
+        "--no-company-cache",
+        action="store_true",
+        help=(
+            "Kikapcsolja a company cache használatát. "
+            "Minden futás új OpenAI API-hívást indít."
+        ),
+    )
+
     return parser.parse_args()
 
 
@@ -55,20 +75,63 @@ def create_report_filename(name: str) -> str:
     return f"{normalized_name}_report.json"
 
 
+def describe_cache_status(status: str) -> str:
+    descriptions = {
+        "hit": (
+            "HIT – meglévő eredmény betöltve, "
+            "nem történt OpenAI API-hívás"
+        ),
+        "miss": (
+            "MISS – nem volt érvényes cache, "
+            "OpenAI keresés történt és az eredmény elmentve"
+        ),
+        "refreshed": (
+            "REFRESHED – új OpenAI keresés történt, "
+            "a cache frissítve lett"
+        ),
+        "disabled": (
+            "DISABLED – a cache ki volt kapcsolva, "
+            "OpenAI keresés történt"
+        ),
+    }
+
+    return descriptions.get(
+        status,
+        status.upper(),
+    )
+
+
 def main() -> None:
     args = parse_arguments()
 
     pipeline = BrandIntelligencePipeline()
 
+    use_company_cache = not args.no_company_cache
+
     candidate = pipeline.analyze_name(
         name=args.name,
         product_description=args.product,
         target_market=args.market,
+        use_company_cache=use_company_cache,
+        refresh_company_cache=(
+            args.refresh_company_cache
+        ),
     )
+
+    cache_status = pipeline.last_company_cache_status
 
     report = {
         "generated_at": pipeline.generated_at(),
-        "candidate": candidate.model_dump(mode="json"),
+        "company_cache": {
+            "status": cache_status,
+            "enabled": use_company_cache,
+            "refresh_requested": (
+                args.refresh_company_cache
+            ),
+        },
+        "candidate": candidate.model_dump(
+            mode="json"
+        ),
     }
 
     REPORTS_DIRECTORY.mkdir(
@@ -92,7 +155,15 @@ def main() -> None:
 
     print()
     print(f"Brand: {candidate.name}")
-    print(f"Domain score: {candidate.domain_score}/10")
+    print(
+        "Company cache: "
+        f"{describe_cache_status(cache_status)}"
+    )
+    print()
+    print(
+        f"Domain score: "
+        f"{candidate.domain_score}/10"
+    )
     print()
 
     for domain in candidate.domains:
@@ -118,7 +189,10 @@ def main() -> None:
     print()
 
     if not candidate.company_matches:
-        print("Nem találtunk hiteles cégnévütközést.")
+        print(
+            "Nem találtunk hiteles "
+            "cégnévütközést."
+        )
     else:
         for match in candidate.company_matches:
             print(
@@ -128,12 +202,14 @@ def main() -> None:
             )
 
             if match.website:
-                print(f"  Web: {match.website}")
+                print(
+                    f"  Web: {match.website}"
+                )
 
             if match.details:
-                print(f"  Indoklás: {match.details}")
-
-    print()
+                print(
+                    f"  Indoklás: {match.details}"
+                )
 
     print()
     print(
@@ -143,7 +219,9 @@ def main() -> None:
     print()
 
     if not candidate.similarity_results:
-        print("Nincs összehasonlítható cégnév.")
+        print(
+            "Nincs összehasonlítható cégnév."
+        )
     else:
         for result in candidate.similarity_results:
             print(
@@ -161,16 +239,23 @@ def main() -> None:
                     f"{result.canonical_compared}"
                 )
 
+    print()
+
     if candidate.rejected:
         print("EREDMÉNY: ELUTASÍTANDÓ")
 
         for reason in candidate.rejection_reasons:
             print(f"- {reason}")
     else:
-        print("EREDMÉNY: TOVÁBBI VIZSGÁLATRA ALKALMAS")
+        print(
+            "EREDMÉNY: "
+            "TOVÁBBI VIZSGÁLATRA ALKALMAS"
+        )
 
     print()
-    print(f"Riport elmentve: {report_path}")
+    print(
+        f"Riport elmentve: {report_path}"
+    )
 
 
 if __name__ == "__main__":

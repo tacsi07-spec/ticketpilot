@@ -17,3 +17,6 @@ Thumbs.db
 
 # Brand Intelligence generated reports
 tools/brand_intelligence/reports/*.json
+
+# Brand Intelligence runtime cache
+tools/brand_intelligence/cache/
