@@ -152,6 +152,15 @@ def main() -> None:
                 f"[{result.status.value}]"
             )
 
+            if (
+                result.canonical_compared.lower()
+                != result.compared_name.lower()
+            ):
+                print(
+                    "  Canonical név: "
+                    f"{result.canonical_compared}"
+                )
+
     if candidate.rejected:
         print("EREDMÉNY: ELUTASÍTANDÓ")
 

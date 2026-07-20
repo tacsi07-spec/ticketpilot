@@ -55,6 +55,9 @@ class SimilarityResult(BaseModel):
     candidate_name: str
     compared_name: str
 
+    canonical_candidate: str
+    canonical_compared: str
+
     normalized_candidate: str
     normalized_compared: str
 

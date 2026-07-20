@@ -10,11 +10,22 @@ from tools.brand_intelligence.models import (
     CompanyMatch,
     SimilarityResult,
 )
+from tools.brand_intelligence.utils.brand_normalizer import (
+    BrandNameNormalizer,
+)
 
 
 class SimilarityChecker:
     conflict_threshold: float = 82.0
     warning_threshold: float = 65.0
+
+    def __init__(
+        self,
+        normalizer: BrandNameNormalizer | None = None,
+    ) -> None:
+        self.normalizer = (
+            normalizer or BrandNameNormalizer()
+        )
 
     @staticmethod
     def normalize_name(name: str) -> str:
@@ -80,8 +91,24 @@ class SimilarityChecker:
         candidate_name: str,
         compared_name: str,
     ) -> SimilarityResult:
-        candidate = self.normalize_name(candidate_name)
-        compared = self.normalize_name(compared_name)
+        canonical_candidate = (
+            self.normalizer.canonicalize(
+                candidate_name
+            )
+        )
+
+        canonical_compared = (
+            self.normalizer.canonicalize(
+                compared_name
+            )
+        )
+
+        candidate = self.normalize_name(
+            canonical_candidate
+        )
+        compared = self.normalize_name(
+            canonical_compared
+        )
 
         if not candidate or not compared:
             raise ValueError(
@@ -146,18 +173,31 @@ class SimilarityChecker:
         return SimilarityResult(
             candidate_name=candidate_name,
             compared_name=compared_name,
+            canonical_candidate=canonical_candidate,
+            canonical_compared=canonical_compared,
             normalized_candidate=candidate,
             normalized_compared=compared,
             ratio_score=round(ratio_score, 2),
-            phonetic_score=round(phonetic_score, 2),
+            phonetic_score=round(
+                phonetic_score,
+                2,
+            ),
             prefix_score=round(prefix_score, 2),
             final_score=final_score,
-            status=self._status_from_score(final_score),
+            status=self._status_from_score(
+                final_score
+            ),
             details=(
-                f"Karakterhasonlóság: {ratio_score:.1f}; "
-                f"fonetikai hasonlóság: {phonetic_score:.1f}; "
-                f"súlyozott hasonlóság: {prefix_score:.1f}; "
-                f"hosszkülönbségi levonás: {length_penalty:.1f}."
+                f"Canonical név: "
+                f"{canonical_compared}; "
+                f"karakterhasonlóság: "
+                f"{ratio_score:.1f}; "
+                f"fonetikai hasonlóság: "
+                f"{phonetic_score:.1f}; "
+                f"súlyozott hasonlóság: "
+                f"{prefix_score:.1f}; "
+                f"hosszkülönbségi levonás: "
+                f"{length_penalty:.1f}."
             ),
         )
 
@@ -208,6 +248,7 @@ class SimilarityChecker:
             (
                 f"Magas névhasonlósági kockázat: "
                 f"{result.compared_name} "
+                f"→ {result.canonical_compared} "
                 f"({result.final_score:.1f}/100)"
             )
             for result in results
