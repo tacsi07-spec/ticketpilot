@@ -51,6 +51,22 @@ class TrademarkCheckResult(BaseModel):
     details: str = ""
     manual_review_required: bool = True
 
+class SimilarityResult(BaseModel):
+    candidate_name: str
+    compared_name: str
+
+    normalized_candidate: str
+    normalized_compared: str
+
+    ratio_score: float
+    phonetic_score: float
+    prefix_score: float
+
+    final_score: float
+
+    status: CheckStatus
+
+    details: str = ""
 
 class BrandCandidate(BaseModel):
     name: str
@@ -64,17 +80,19 @@ class BrandCandidate(BaseModel):
     company_matches: list[CompanyMatch] = Field(
         default_factory=list
     )
+    similarity_results: list[SimilarityResult] = Field(
+        default_factory=list
+    )
     social_results: list[SocialCheckResult] = Field(
         default_factory=list
     )
-    trademark_results: list[TrademarkCheckResult] = Field(
-        default_factory=list
-    )
+    
 
     linguistic_score: float = 0.0
     originality_score: float = 0.0
     domain_score: float = 0.0
     company_conflict_score: float = 0.0
+    similarity_score: float = 0.0
     social_score: float = 0.0
     trademark_score: float = 0.0
     final_score: float = 0.0

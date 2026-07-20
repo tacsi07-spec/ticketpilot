@@ -14,3 +14,6 @@ frontend/out/
 .vscode/
 .DS_Store
 Thumbs.db
+
+# Brand Intelligence generated reports
+tools/brand_intelligence/reports/*.json

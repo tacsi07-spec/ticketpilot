@@ -8,6 +8,9 @@ from tools.brand_intelligence.checkers.company_checker import (
 from tools.brand_intelligence.checkers.domain_checker import (
     DomainChecker,
 )
+from tools.brand_intelligence.checkers.similarity_checker import (
+    SimilarityChecker,
+)
 from tools.brand_intelligence.models import BrandCandidate
 
 
@@ -16,12 +19,16 @@ class BrandIntelligencePipeline:
         self,
         domain_checker: DomainChecker | None = None,
         company_checker: CompanyChecker | None = None,
+        similarity_checker: SimilarityChecker | None = None,
     ) -> None:
         self.domain_checker = (
             domain_checker or DomainChecker()
         )
         self.company_checker = (
             company_checker or CompanyChecker()
+        )
+        self.similarity_checker = (
+            similarity_checker or SimilarityChecker()
         )
 
     def analyze_name(
@@ -58,14 +65,33 @@ class BrandIntelligencePipeline:
             )
         )
 
-        rejection_reasons = (
+        candidate.similarity_results = (
+            self.similarity_checker.analyze_company_matches(
+                candidate_name=name,
+                matches=candidate.company_matches,
+            )
+        )
+
+        candidate.similarity_score = (
+            self.similarity_checker.calculate_score(
+                candidate.similarity_results
+            )
+        )
+
+        candidate.rejection_reasons.extend(
             self.company_checker.get_rejection_reasons(
                 candidate.company_matches
             )
         )
 
         candidate.rejection_reasons.extend(
-            rejection_reasons
+            self.similarity_checker.get_rejection_reasons(
+                candidate.similarity_results
+            )
+        )
+
+        candidate.rejection_reasons = list(
+            dict.fromkeys(candidate.rejection_reasons)
         )
 
         candidate.rejected = bool(

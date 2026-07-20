@@ -135,6 +135,23 @@ def main() -> None:
 
     print()
 
+    print()
+    print(
+        "Similarity score: "
+        f"{candidate.similarity_score}/10"
+    )
+    print()
+
+    if not candidate.similarity_results:
+        print("Nincs összehasonlítható cégnév.")
+    else:
+        for result in candidate.similarity_results:
+            print(
+                f"{result.compared_name:<30} "
+                f"{result.final_score:>5.1f}/100 "
+                f"[{result.status.value}]"
+            )
+
     if candidate.rejected:
         print("EREDMÉNY: ELUTASÍTANDÓ")
 
