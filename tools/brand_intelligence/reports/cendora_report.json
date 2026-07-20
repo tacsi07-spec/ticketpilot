@@ -1,0 +1,72 @@
+{
+  "generated_at": "2026-07-20T16:59:55.574031+00:00",
+  "candidate": {
+    "name": "Cendora",
+    "pronunciation": "",
+    "meaning": "",
+    "tagline": "",
+    "domains": [
+      {
+        "extension": "com",
+        "domain": "cendora.com",
+        "status": "conflict",
+        "possibly_available": false,
+        "details": "A domainhoz RDAP-regisztráció tartozik."
+      },
+      {
+        "extension": "ai",
+        "domain": "cendora.ai",
+        "status": "clear",
+        "possibly_available": true,
+        "details": "Az RDAP nem talált regisztrációt. A domain valószínűleg elérhető, de ezt regisztrátornál is ellenőrizni kell."
+      },
+      {
+        "extension": "io",
+        "domain": "cendora.io",
+        "status": "clear",
+        "possibly_available": true,
+        "details": "Az RDAP nem talált regisztrációt. A domain valószínűleg elérhető, de ezt regisztrátornál is ellenőrizni kell."
+      },
+      {
+        "extension": "de",
+        "domain": "cendora.de",
+        "status": "clear",
+        "possibly_available": true,
+        "details": "Az RDAP nem talált regisztrációt. A domain valószínűleg elérhető, de ezt regisztrátornál is ellenőrizni kell."
+      },
+      {
+        "extension": "app",
+        "domain": "cendora.app",
+        "status": "clear",
+        "possibly_available": true,
+        "details": "Az RDAP nem talált regisztrációt. A domain valószínűleg elérhető, de ezt regisztrátornál is ellenőrizni kell."
+      },
+      {
+        "extension": "dev",
+        "domain": "cendora.dev",
+        "status": "conflict",
+        "possibly_available": false,
+        "details": "A domainhoz RDAP-regisztráció tartozik."
+      },
+      {
+        "extension": "co",
+        "domain": "cendora.co",
+        "status": "clear",
+        "possibly_available": true,
+        "details": "Az RDAP nem talált regisztrációt. A domain valószínűleg elérhető, de ezt regisztrátornál is ellenőrizni kell."
+      }
+    ],
+    "company_matches": [],
+    "social_results": [],
+    "trademark_results": [],
+    "linguistic_score": 0.0,
+    "originality_score": 0.0,
+    "domain_score": 7.0,
+    "company_conflict_score": 0.0,
+    "social_score": 0.0,
+    "trademark_score": 0.0,
+    "final_score": 0.0,
+    "rejected": false,
+    "rejection_reasons": []
+  }
+}
