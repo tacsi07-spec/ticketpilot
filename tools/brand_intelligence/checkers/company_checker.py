@@ -27,7 +27,13 @@ class CompanyChecker:
         client: OpenAI | None = None,
     ) -> None:
         self.config = config
-        self.client = client or OpenAI()
+        self.client = client
+
+    def _get_client(self) -> OpenAI:
+        if self.client is None:
+            self.client = OpenAI()
+
+        return self.client
 
     def _build_prompt(
         self,
@@ -165,7 +171,9 @@ If nothing credible is found, return:
             brand_name,
         )
 
-        response = self.client.responses.create(
+        client = self._get_client()
+
+        response = client.responses.create(
             model=self.config.company_search_model,
             tools=[
                 {
