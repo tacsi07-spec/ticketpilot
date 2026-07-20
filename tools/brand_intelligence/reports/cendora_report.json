@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-20T16:59:55.574031+00:00",
+  "generated_at": "2026-07-20T17:23:24.622684+00:00",
   "candidate": {
     "name": "Cendora",
     "pronunciation": "",
@@ -56,7 +56,80 @@
         "details": "Az RDAP nem talált regisztrációt. A domain valószínűleg elérhető, de ezt regisztrátornál is ellenőrizni kell."
       }
     ],
-    "company_matches": [],
+    "company_matches": [
+      {
+        "name": "Cendora",
+        "website": "https://cendorasystems.com/",
+        "industry": "AI-powered SaaS platform combining CRM, scheduling, invoicing, ERP and workforce management",
+        "country": "Spain",
+        "similarity_score": 100.0,
+        "conflict_risk": "conflict",
+        "details": "Exact same name and strong industry overlap. Cendora is an active web-based business-management platform for companies and professionals, with CRM, workflow automation and AI-assisted email classification and responses. This is the clearest potential conflict."
+      },
+      {
+        "name": "Sendora AI",
+        "website": "https://www.sendora.ai/",
+        "industry": "B2B AI transformation, sales automation and custom AI systems",
+        "country": "United States",
+        "similarity_score": 90.0,
+        "conflict_risk": "conflict",
+        "details": "Only the initial consonant differs, making the name visually and phonetically close. It serves B2B customers with AI agents, workflow automation, CRM-related systems, SaaS infrastructure and ongoing technical support."
+      },
+      {
+        "name": "Zendora",
+        "website": "https://zendora.ai/",
+        "industry": "AI sales-agent SaaS and email automation platform",
+        "country": null,
+        "similarity_score": 89.0,
+        "conflict_risk": "conflict",
+        "details": "Nearly identical pronunciation and spelling. Zendora is an active AI SaaS platform providing automated prospecting, email sequences, shared inbox functionality, response assistance and analytics for business teams."
+      },
+      {
+        "name": "Cendra",
+        "website": "https://www.cendra.ai/",
+        "industry": "Multi-agent AI platform for hospitality communications and operations automation",
+        "country": "United States",
+        "similarity_score": 85.0,
+        "conflict_risk": "conflict",
+        "details": "Cendra differs by only one omitted letter and is visually close to Cendora. Its platform automates customer messages, operational tasks, escalations and knowledge workflows, creating meaningful overlap with AI support and automation software."
+      },
+      {
+        "name": "Centora",
+        "website": "https://www.centora.uk/",
+        "industry": "Software studio developing consumer and B2B software products",
+        "country": "United Kingdom",
+        "similarity_score": 82.0,
+        "conflict_risk": "conflict",
+        "details": "One-letter substitution produces a highly similar name. Centora is an active London software company building and operating software products, including tools for businesses and agencies, although it is not specifically an IT-support platform."
+      },
+      {
+        "name": "Candora",
+        "website": "https://candora.ai/",
+        "industry": "AI-powered technical interviewing and recruitment SaaS",
+        "country": null,
+        "similarity_score": 78.0,
+        "conflict_risk": "conflict",
+        "details": "The name differs by one vowel and has a similar appearance and cadence. Candora is an active B2B AI software platform that automates technical interviews and candidate evaluation, producing technology-sector overlap but a different use case."
+      },
+      {
+        "name": "Cencora",
+        "website": "https://www.cencora.com/",
+        "industry": "Global pharmaceutical distribution, healthcare services, logistics and technology solutions",
+        "country": "United States",
+        "similarity_score": 64.0,
+        "conflict_risk": "warning",
+        "details": "One-letter difference and a very similar visual structure. Cencora is a large international company with operations across Europe, including Germany. Its core healthcare and pharmaceutical activities differ substantially, but its scale and European presence increase potential name-recognition risk."
+      },
+      {
+        "name": "CENDORA OÜ",
+        "website": "https://www.inforegister.ee/en/17431328-CENDORA-OU/",
+        "industry": "Real-estate rental",
+        "country": "Estonia",
+        "similarity_score": 55.0,
+        "conflict_risk": "warning",
+        "details": "Exact corporate name registered as an active Estonian company in February 2026. Its recorded activity is real-estate rental rather than software or AI, so industry conflict appears weak, but the exact name and EU registration are relevant."
+      }
+    ],
     "social_results": [],
     "trademark_results": [],
     "linguistic_score": 0.0,
@@ -66,7 +139,14 @@
     "social_score": 0.0,
     "trademark_score": 0.0,
     "final_score": 0.0,
-    "rejected": false,
-    "rejection_reasons": []
+    "rejected": true,
+    "rejection_reasons": [
+      "Magas cégnévütközési kockázat: Cendora (100/100) – https://cendorasystems.com/",
+      "Magas cégnévütközési kockázat: Sendora AI (90/100) – https://www.sendora.ai/",
+      "Magas cégnévütközési kockázat: Zendora (89/100) – https://zendora.ai/",
+      "Magas cégnévütközési kockázat: Cendra (85/100) – https://www.cendra.ai/",
+      "Magas cégnévütközési kockázat: Centora (82/100) – https://www.centora.uk/",
+      "Magas cégnévütközési kockázat: Candora (78/100) – https://candora.ai/"
+    ]
   }
 }

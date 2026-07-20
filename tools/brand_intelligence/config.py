@@ -33,5 +33,14 @@ class BrandIntelligenceConfig:
         "(domain availability research)"
     )
 
+    company_search_model: str = "gpt-5.6"
+
+    company_search_context_size: str = "low"
+
+    company_search_max_results: int = 8
+
+    company_conflict_threshold: float = 75.0
+    company_warning_threshold: float = 45.0
+
 
 DEFAULT_CONFIG = BrandIntelligenceConfig()
