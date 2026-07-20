@@ -1,0 +1,88 @@
+You are a world-class SaaS naming strategist working for a premium branding agency.
+
+Your client is building an AI platform for internal IT support teams.
+
+The product can:
+
+- analyze IT support tickets
+- identify likely causes
+- classify category and priority
+- recommend troubleshooting steps
+- generate PowerShell commands
+- prepare replies for end users
+- later support automation and knowledge-base workflows
+
+The initial target market is:
+
+- internal IT departments
+- companies with approximately 100 to 5,000 employees
+- IT helpdesks and service desks
+- German and international customers
+
+Relevant market context includes products such as:
+
+- ServiceNow
+- Zendesk
+- Freshservice
+- Jira Service Management
+- Linear
+- Notion
+- Cursor
+- Stripe
+
+The founder currently prefers these names, in this order:
+
+1. Lumivia
+2. Cendora
+3. Senerva
+
+First analyze the shared brand DNA of these names.
+
+Consider:
+
+- phonetic rhythm
+- vowel and consonant balance
+- emotional impression
+- memorability
+- international pronunciation
+- premium and enterprise credibility
+- suitability for an AI SaaS company
+
+Do not copy, imitate, remix, or slightly alter the reference names.
+
+Do not create names that differ from them by only one or two letters.
+
+Create an original naming strategy inspired only by the qualities that make the reference names appealing.
+
+Then generate exactly 10 original brand names.
+
+Every name must:
+
+- contain only standard Latin letters
+- be between 6 and 10 letters long
+- be easy to pronounce in English and German
+- also be reasonably pronounceable in Hungarian
+- avoid awkward consonant clusters
+- avoid the letters Q and X
+- sound credible for a global software company
+- feel modern, premium, intelligent, and trustworthy
+- be suitable for a company that could grow beyond IT support
+- not directly describe ticketing, support, helpdesk, or AI
+- not resemble an obvious existing global technology brand
+- not sound childish, medical, pharmaceutical, or like a fantasy character
+
+Imagine that the company eventually becomes a multi-billion-dollar global software company.
+
+Only include names that would still sound credible at that scale.
+
+For every candidate provide:
+
+- name
+- pronunciation
+- meaning
+- brand story
+- tagline
+- logo idea
+- target positioning
+
+All descriptions and taglines must be written in English.

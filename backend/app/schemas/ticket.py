@@ -10,6 +10,8 @@ class TicketAnalysis(BaseModel):
     category: str
     priority: str
     priority_reason: str
+    confidence_score: int
+    confidence_reason: str
     problem_summary: str
     likely_causes: list[str]
     troubleshooting_steps: list[str]

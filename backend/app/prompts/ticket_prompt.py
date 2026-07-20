@@ -90,4 +90,40 @@ If the ticket explicitly states:
 - "all users"
 
 then ALWAYS assign Priority = Critical unless the ticket explicitly says the service is still operational.
+
+Confidence assessment:
+
+Return:
+
+confidence_score
+
+Integer between 0 and 100.
+
+Guidelines:
+
+95-100
+Very clear problem.
+Enough information.
+Very high confidence.
+
+80-94
+Likely diagnosis.
+Minor assumptions.
+
+60-79
+Several possible causes.
+More information would help.
+
+40-59
+Insufficient information.
+Diagnosis uncertain.
+
+0-39
+Almost impossible to determine.
+
+Also return:
+
+confidence_reason
+
+One short sentence explaining the score.
 """
