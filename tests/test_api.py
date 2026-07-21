@@ -111,7 +111,18 @@ def test_analyze_success_with_mocked_dependencies():
             },
         )
     finally:
-        app.dependency_overrides.clear()
+        app.dependency_overrides.pop(
+            get_pipeline,
+            None,
+        )
+        app.dependency_overrides.pop(
+            get_report_generator,
+            None,
+        )
+        app.dependency_overrides.pop(
+            get_settings,
+            None,
+        )
 
     assert response.status_code == 200
     data = response.json()

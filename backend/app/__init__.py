@@ -7,6 +7,15 @@ from backend.api.analyze import router as analyze_router
 from backend.config import get_settings
 from backend.logging_config import configure_logging
 
+from backend.database.connection import (
+    Base,
+    engine,
+)
+from backend.database import models
+
+from backend.api.history import (
+    router as history_router,
+)
 
 settings = get_settings()
 configure_logging(settings)
@@ -21,6 +30,10 @@ async def lifespan(
     settings.absolute_report_directory.mkdir(
         parents=True,
         exist_ok=True,
+    )
+
+    Base.metadata.create_all(
+        bind=engine,
     )
 
     logger.info(
@@ -45,7 +58,7 @@ app = FastAPI(
 )
 
 app.include_router(analyze_router)
-
+app.include_router(history_router)
 
 @app.get("/")
 def root():

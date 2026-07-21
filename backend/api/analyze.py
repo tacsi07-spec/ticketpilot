@@ -19,6 +19,14 @@ from backend.config import (
     Settings,
     get_settings,
 )
+from sqlalchemy.orm import Session
+
+from backend.database.connection import (
+    get_database_session,
+)
+from backend.database.models import (
+    BrandAnalysis,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -51,7 +59,11 @@ async def analyze(
     html_report_generator: HtmlReportGenerator = Depends(
         get_report_generator
     ),
-    settings: Settings = Depends(get_settings),
+    settings: Settings = Depends(
+        get_settings),
+    database: Session = Depends(
+        get_database_session
+    ),
 ):
     try:
         candidate = analysis_pipeline.analyze_name(
@@ -69,6 +81,19 @@ async def analyze(
             candidate,
             str(output_path),
         )
+        analysis = BrandAnalysis(
+        name=candidate.name,
+        product_description=request.product,
+        target_market=request.market,
+        overall_score=candidate.final_score,
+        rejected=candidate.rejected,
+        report_path=str(report_path),
+        status="completed",
+        )
+
+        database.add(analysis)
+        database.commit()
+        database.refresh(analysis)
 
         return AnalyzeResponse(
             success=True,

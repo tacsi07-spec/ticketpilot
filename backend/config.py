@@ -15,6 +15,8 @@ class Settings(BaseSettings):
     app_name: str = "Brand Intelligence API"
     app_version: str = "1.0.0"
 
+    database_url: str = "sqlite:///./ticketpilot.db"
+    
     report_directory: Path = Field(
         default=Path(
             "tools/brand_intelligence/reports"
