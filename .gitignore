@@ -20,3 +20,11 @@ tools/brand_intelligence/reports/*.json
 
 # Brand Intelligence runtime cache
 tools/brand_intelligence/cache/
+
+# Local environment variables
+.env
+.env.*
+!.env.example
+
+# Brand Intelligence runtime cache
+tools/brand_intelligence/cache/
