@@ -15,6 +15,9 @@ from tools.brand_intelligence.models import (
     CheckStatus,
     CompanyMatch,
 )
+from tools.brand_intelligence.services.openai_service import (
+    openai_service,
+)
 
 
 LOGGER = logging.getLogger(__name__)
@@ -29,14 +32,11 @@ class CompanyChecker:
         self.config = config
         self.client = client
 
-    from tools.brand_intelligence.services.openai_service import (
-        openai_service,
-    )
-
     def _get_client(self) -> OpenAI:
-        return openai_service.client
+        if self.client is not None:
+            return self.client
 
-        return self.client
+        return openai_service.client
 
     def _build_prompt(
         self,

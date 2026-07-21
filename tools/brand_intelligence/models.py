@@ -43,13 +43,42 @@ class SocialCheckResult(BaseModel):
     details: str = ""
 
 
-class TrademarkCheckResult(BaseModel):
+class LegalMatch(BaseModel):
+    name: str
     database: str
-    query: str
-    status: CheckStatus
-    matching_marks: list[str] = Field(default_factory=list)
+    registration_number: str | None = None
+    owner: str | None = None
+    status_text: str | None = None
+    goods_services: str | None = None
+    jurisdiction: str | None = None
+    source_url: str | None = None
+
+    similarity_score: float = Field(
+        default=0.0,
+        ge=0,
+        le=100,
+    )
+    industry_overlap_score: float = Field(
+        default=0.0,
+        ge=0,
+        le=100,
+    )
+    conflict_risk: CheckStatus = CheckStatus.UNKNOWN
     details: str = ""
+
+
+class LegalCheckResult(BaseModel):
+    query: str
+    status: CheckStatus = CheckStatus.UNKNOWN
+    matches: list[LegalMatch] = Field(default_factory=list)
+    summary: str = ""
+    recommendation: str = ""
+    sources_checked: list[str] = Field(default_factory=list)
     manual_review_required: bool = True
+    disclaimer: str = (
+        "Preliminary automated research only; "
+        "not a legal opinion or legal advice."
+    )
 
 class SimilarityResult(BaseModel):
     candidate_name: str
@@ -87,6 +116,9 @@ class BrandCandidate(BaseModel):
         default_factory=list
     )
     social_results: list[SocialCheckResult] = Field(
+        default_factory=list
+    )
+    legal_results: list[LegalCheckResult] = Field(
         default_factory=list
     )
     
