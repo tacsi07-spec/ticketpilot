@@ -255,7 +255,37 @@ class BrandIntelligencePipeline:
             candidate.rejection_reasons
         )
 
+        candidate.final_score = (
+            self._calculate_final_score(candidate)
+        )
+
         return candidate
+
+    @staticmethod
+    def _calculate_final_score(
+        candidate: BrandCandidate,
+    ) -> float:
+        """
+        Calculate the weighted overall brand score.
+
+        Weights:
+        - Domain availability: 20%
+        - Company conflicts: 25%
+        - Name similarity: 20%
+        - Legal risk: 35%
+        """
+
+        weighted_score = (
+            candidate.domain_score * 0.20
+            + candidate.company_conflict_score * 0.25
+            + candidate.similarity_score * 0.20
+            + candidate.trademark_score * 0.35
+        )
+
+        return round(
+            max(0.0, min(10.0, weighted_score)),
+            2,
+        )
 
     @staticmethod
     def generated_at() -> str:
