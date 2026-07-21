@@ -15,7 +15,10 @@ from tools.brand_intelligence.pipeline import (
 from tools.brand_intelligence.report_generator import (
     HtmlReportGenerator,
 )
-
+from backend.config import (
+    Settings,
+    get_settings,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -48,6 +51,7 @@ async def analyze(
     html_report_generator: HtmlReportGenerator = Depends(
         get_report_generator
     ),
+    settings: Settings = Depends(get_settings),
 ):
     try:
         candidate = analysis_pipeline.analyze_name(
@@ -56,12 +60,14 @@ async def analyze(
             target_market=request.market,
         )
 
+        output_path = (
+            settings.absolute_report_directory
+            / f"{candidate.name.lower()}_report.html"
+        )
+
         report_path = html_report_generator.save(
             candidate,
-            (
-                "tools/brand_intelligence/reports/"
-                f"{candidate.name.lower()}_report.html"
-            ),
+            str(output_path),
         )
 
         return AnalyzeResponse(

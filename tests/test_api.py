@@ -8,6 +8,10 @@ from backend.api.analyze import (
 )
 from backend.app import app
 
+from backend.config import (
+    Settings,
+    get_settings,
+)
 
 client = TestClient(app)
 
@@ -52,6 +56,13 @@ class FakeReportGenerator:
             "cendora_report.html"
         )
 
+def get_test_settings() -> Settings:
+    return Settings(
+        report_directory=(
+            "tools/brand_intelligence/reports"
+        ),
+        _env_file=None,
+    )
 
 def test_root_endpoint():
     response = client.get("/")
@@ -81,6 +92,9 @@ def test_analyze_success_with_mocked_dependencies():
     )
     app.dependency_overrides[get_report_generator] = (
         lambda: FakeReportGenerator()
+    )
+    app.dependency_overrides[get_settings] = (
+        get_test_settings
     )
 
     try:
