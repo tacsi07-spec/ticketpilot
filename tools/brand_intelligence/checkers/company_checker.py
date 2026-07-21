@@ -29,9 +29,12 @@ class CompanyChecker:
         self.config = config
         self.client = client
 
+    from tools.brand_intelligence.services.openai_service import (
+        openai_service,
+    )
+
     def _get_client(self) -> OpenAI:
-        if self.client is None:
-            self.client = OpenAI()
+        return openai_service.client
 
         return self.client
 
