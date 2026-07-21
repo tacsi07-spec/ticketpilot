@@ -16,9 +16,13 @@ from tools.brand_intelligence.checkers.similarity_checker import (
 from tools.brand_intelligence.models import (
     BrandCandidate,
     CompanyMatch,
+    LegalCheckResult,
 )
 from tools.brand_intelligence.utils.company_cache import (
     CompanySearchCache,
+)
+from tools.brand_intelligence.checkers.legal_checker import (
+    LegalChecker,
 )
 
 
@@ -38,6 +42,7 @@ class BrandIntelligencePipeline:
         domain_checker: DomainChecker | None = None,
         company_checker: CompanyChecker | None = None,
         similarity_checker: SimilarityChecker | None = None,
+        legal_checker: LegalChecker | None = None,
         company_cache: CompanySearchCache | None = None,
     ) -> None:
         self.domain_checker = (
@@ -50,6 +55,10 @@ class BrandIntelligencePipeline:
 
         self.similarity_checker = (
             similarity_checker or SimilarityChecker()
+        )
+
+        self.legal_checker = (
+            legal_checker or LegalChecker()
         )
 
         self.company_cache = (
@@ -197,17 +206,42 @@ class BrandIntelligencePipeline:
             )
         )
 
+        legal_result: LegalCheckResult = (
+            self.legal_checker.check_name(
+                brand_name=name,
+                product_description=product_description,
+                target_market=target_market,
+            )
+        )
+
+        candidate.legal_results = [
+           legal_result
+        ]
+
+        candidate.trademark_score = (
+            self.legal_checker.calculate_score(
+                legal_result
+            )
+        )
+
         candidate.rejection_reasons.extend(
             self.company_checker
             .get_rejection_reasons(
                 candidate.company_matches
             )
-        )
+        )    
 
         candidate.rejection_reasons.extend(
             self.similarity_checker
             .get_rejection_reasons(
                 candidate.similarity_results
+            )
+        )
+
+        candidate.rejection_reasons.extend(
+            self.legal_checker
+            .get_rejection_reasons(
+                legal_result
             )
         )
 
